@@ -1,0 +1,11 @@
+{
+  "name": "cartographer",
+  "version": "1.0.0",
+  "description": "Visual codebase and architecture diagram generator",
+  "main": "lib/cartographer.js",
+  "type": "module",
+  "scripts": {
+    "test": "node --test tests/cartographer.test.js"
+  },
+  "license": "MIT"
+}
