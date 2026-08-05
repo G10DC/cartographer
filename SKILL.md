@@ -19,3 +19,13 @@ Scan directory and output architecture diagram:
 ```bash
 node C:/Users/GdC/.gemini/config/skills/cartographer/lib/cartographer.js --dir "."
 ```
+
+
+---
+
+## ⚡ Spark Breakthrough Enhancement
+
+- **Feature**: **3D Interactive Mermaid Visualizer**
+- **Description**: Transforms static architecture graphs into interactive, click-to-code visual canvases.
+- **Synergy**: Integrated with `artisan` (dashboard UI) & `trellis` (reachability).
+- **Framework**: Applied via the `spark` 4-Lens Lateral Ideation Engine.
