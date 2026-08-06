@@ -1,23 +1,17 @@
-import { describe, it } from 'node:test';
-import assert from 'node:assert';
-import { Cartographer } from '../lib/cartographer.js';
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import { CartographerDiagrammer } from '../lib/cartographer.js';
 
-describe('Cartographer', () => {
-  it('parses import statements from JS code', () => {
-    const cartographer = new Cartographer();
-    const code = `import fs from 'fs';\nimport { helper } from './utils.js';`;
-    const imports = cartographer.parseImports(code, 'app.js');
-    assert.deepStrictEqual(imports, ['fs', './utils.js']);
-  });
+test('CartographerDiagrammer generates valid Mermaid diagram from Trellis index', () => {
+  const diag = new CartographerDiagrammer();
+  const mockTrellisIndex = {
+    nodes: [{ id: 'app.js', label: 'App Module' }, { id: 'db.js', label: 'DB Client' }],
+    edges: [{ from: 'app.js', to: 'db.js', tier: 2 }]
+  };
 
-  it('generates valid mermaid graph syntax', () => {
-    const cartographer = new Cartographer();
-    const fileMap = {
-      'app.js': ['./utils.js'],
-      'utils.js': []
-    };
-    const mermaid = cartographer.generateMermaidGraph(fileMap);
-    assert.match(mermaid, /```mermaid/);
-    assert.match(mermaid, /app_js\["app\.js"\] --> __utils_js\["\.\/utils\.js"\]/);
-  });
+  const res = diag.generateMermaidDiagram(mockTrellisIndex);
+  assert.equal(res.nodeCount, 2);
+  assert.equal(res.edgeCount, 1);
+  assert.ok(res.mermaid.includes('app_js["App Module"]'));
+  assert.ok(res.mermaid.includes('app_js -- "tier 2" --> db_js'));
 });
