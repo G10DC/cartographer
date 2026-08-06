@@ -17,7 +17,7 @@ Automated Visual Codebase & Architecture Mapper. Cartographer extracts module st
 
 Scan directory and output architecture diagram:
 ```bash
-node C:/Users/GdC/.gemini/config/skills/cartographer/lib/cartographer.js --dir "."
+node lib/cartographer.js --dir "."
 ```
 
 
