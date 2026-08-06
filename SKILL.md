@@ -1,6 +1,11 @@
 ---
 name: cartographer
-description: Visual codebase and architecture diagram generator. Scans codebase dependencies, file structures, and imports to generate clean, readable Mermaid diagrams for architectural documentation.
+description: >-
+  Visual codebase and architecture diagram generator. Consumes dependency graphs
+  from trellis and file structures to generate clean, readable Mermaid diagrams
+  for architectural documentation. Use when you need a visual map of module
+  dependencies or project structure. Never rebuild the dependency graph yourself
+  -- consume trellis output; never use for runtime call tracing.
 ---
 
 # 🗺️ Cartographer
