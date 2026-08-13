@@ -1,5 +1,6 @@
 ---
 name: cartographer
+status: stub
 description: >-
   Visual codebase and architecture diagram generator. Consumes dependency graphs
   from trellis and file structures to generate clean, readable Mermaid diagrams
@@ -8,39 +9,36 @@ description: >-
   -- consume trellis output; never use for runtime call tracing.
 ---
 
-# ️ Cartographer
+# Cartographer
 
-Automated Visual Codebase & Architecture Mapper. Cartographer extracts module structures, class hierarchies, and file imports from a codebase and renders clean Mermaid diagrams (`graph TD`, `sequenceDiagram`, `classDiagram`).
+**Mermaid diagram formatter for an already-built graph.** Doesn't build a dependency graph or read the filesystem — takes a `{ nodes, edges }` structure the caller already assembled and formats it as a `graph TD` Mermaid block.
 
-## Features
+## What it actually does
+`generateMermaidDiagram(graphIndex)` walks `nodes`/`edges`, sanitizes IDs, emits `graph TD` syntax
+with edge labels from `edge.tier` when present. That's the entire implementation.
 
-1. **Dependency Graphs**: Renders module-level import/export graphs.
-2. **Directory Trees**: Generates visual architecture flow diagrams.
-3. **Mermaid Output**: Produces GitHub-flavored Markdown compatible diagram blocks.
+## What it does not do (despite the name)
+- **No graph construction** — no parser, no filesystem scan, no import resolution.
+- **No `trellis` integration in code** — despite the doc claim, nothing imports `trellis` or
+  reads its output files. You must build the `{ nodes, edges }` structure yourself.
+- **Only `graph TD`** — no class/sequence diagrams, no interactive output.
 
-## Execution Guide
+## Usage (library, not a CLI)
 
-Scan directory and output architecture diagram:
-```bash
-node lib/cartographer.js --dir "."
+```js
+import { CartographerDiagrammer } from './lib/cartographer.js';
+
+// You must supply the graph -- cartographer builds nothing itself.
+const graph = { nodes: [{ id: 'a' }, { id: 'b' }], edges: [{ from: 'a', to: 'b', tier: 0 }] };
+const { mermaid } = new CartographerDiagrammer().generateMermaidDiagram(graph);
 ```
-
-
----
-
-## Spark Breakthrough Enhancement
-
-- **Feature**: **3D Interactive Mermaid Visualizer**
-- **Description**: Transforms static architecture graphs into interactive, click-to-code visual canvases.
-- **Synergy**: Integrated with `artisan` (dashboard UI) & `trellis` (reachability).
-- **Framework**: Applied via the `spark` 4-Lens Lateral Ideation Engine.
-
 
 ## When to use
 
-- Primary domain workflow execution as specified in frontmatter description.
-
+- You already have a `{ nodes, edges }` graph (hand-built or `trellis`-shaped) and want it
+  rendered as Mermaid without writing the formatting code yourself.
 
 ## When NOT to use
 
-- Tasks outside declared skill scope or handled by specialized sibling skills.
+- **The graph needs building from source** — nothing here reads a codebase; build it first.
+- **Anything beyond a flowchart** — class/sequence diagrams, interactive canvas: not implemented.
